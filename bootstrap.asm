@@ -1,4 +1,4 @@
-[org 0x7C00]
+org 0x7C00
 
 KERNEL_OFFSET equ 0x1000 ; offset to reach main func in kernel.c
 
@@ -29,20 +29,18 @@ load_kernel:
 	call print_string
 
 	mov bx, KERNEL_OFFSET ; destination
-	mov dh, 6 ; 6 sectors of drive
+	mov dh, 2 ; 2 sectors of drive
 	mov dl, [BOOT_DRIVE]
 	call disk_load
 
 	ret
 
 [bits 32]
-;extern main
 
 BEGIN_PM:
 	mov ebx, MSG_PROT_MODE
 	call print_string_pm
 
-	;call main
 	jmp KERNEL_OFFSET
 
 	jmp $

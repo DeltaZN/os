@@ -8,16 +8,19 @@ switch_to_32:
 	or eax, 0x1
 	mov cr0, eax
 
-	jmp init_pm
+	jmp CODE_SEG:init_pm
 
 [bits 32]
 init_pm:
-	mov ax, DATA_SEG
-	mov ds, ax
-	mov ss, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
+	;inc eax
+	;jmp $
+	mov ecx, DATA_SEG
+;jmp $
+	mov ds, ecx
+	mov ss, ecx
+	mov es, ecx
+	mov fs, ecx
+	mov gs, ecx
 
 	mov ebp, 0x90000
 	mov esp, ebp
