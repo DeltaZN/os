@@ -11,7 +11,7 @@ kernel.o: kernel.c
 	$(CC) -fno-pie -m32 -ffreestanding -c $< -o $@
 
 kernel_entry.o: kernel_entry.asm
-	$(ASM) $< -f elf -o $@
+	$(ASM) $< -f elf32 -o $@
 
 bootstrap.bin: bootstrap.asm
 	$(ASM) $< -f bin -o $@

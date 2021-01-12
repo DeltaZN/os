@@ -1,4 +1,4 @@
-[bits 16]
+bits 16
 
 switch_to_32:
 	cli
@@ -10,17 +10,14 @@ switch_to_32:
 
 	jmp CODE_SEG:init_pm
 
-[bits 32]
+bits 32
 init_pm:
-	;inc eax
-	;jmp $
-	mov ecx, DATA_SEG
-;jmp $
-	mov ds, ecx
-	mov ss, ecx
-	mov es, ecx
-	mov fs, ecx
-	mov gs, ecx
+	mov ax, DATA_SEG
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
 
 	mov ebp, 0x90000
 	mov esp, ebp

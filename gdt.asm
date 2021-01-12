@@ -1,7 +1,6 @@
 gdt_start:
 gdt_null:
-	dd 0x0
-	dd 0x0
+	dq 0x0
 
 gdt_code:
 	; base=0x0, limit=0xfffff
@@ -19,7 +18,7 @@ gdt_data:
 	;type flags: (code)0 (expand down)0 (writable)1 (accessed)0 -> 0010b
 	dw 0xffff
 	dw 0x0
-	dw 0x0
+	db 0x0
 	db 10010010b
 	db 11001111b
 	db 0x0
