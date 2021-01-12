@@ -26,9 +26,6 @@ boot:
 bits 16
 
 load_kernel:
-	;mov bx, MSG_LOAD_KERNEL
-	;call print_string
-
 	mov bx, KERNEL_OFFSET ; destination
 	mov dh, 2 ; 2 sectors of drive
 	mov dl, [BOOT_DRIVE]
