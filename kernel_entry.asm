@@ -1,4 +1,4 @@
 [bits 32]
-[extern kernel]
-call kernel
+[extern kernel_c]
+call kernel_c
 jmp $
