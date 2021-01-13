@@ -6,7 +6,47 @@
 #define PIC_2_DATA 0xA1
 #define IDT_SIZE 256
 
-#include "keyboard_map.h"
+//#include "keyboard_map.h"
+
+unsigned char keyboard_map[128] =
+        {
+                0,  27, '1', '2', '3', '4', '5', '6', '7', '8',     /* 9 */
+                '9', '0', '-', '=', '\b',     /* Backspace */
+                '\t',                 /* Tab */
+                'q', 'w', 'e', 'r',   /* 19 */
+                't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', /* Enter key */
+                0,                  /* 29   - Control */
+                'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',     /* 39 */
+                '\'', '`',   0,                /* Left shift */
+                '\\', 'z', 'x', 'c', 'v', 'b', 'n',                    /* 49 */
+                'm', ',', '.', '/',   0,                              /* Right shift */
+                '*',
+                0,  /* Alt */
+                ' ',  /* Space bar */
+                0,  /* Caps lock */
+                0,  /* 59 - F1 key ... > */
+                0,   0,   0,   0,   0,   0,   0,   0,
+                0,  /* < ... F10 */
+                0,  /* 69 - Num lock*/
+                0,  /* Scroll Lock */
+                0,  /* Home key */
+                0,  /* Up Arrow */
+                0,  /* Page Up */
+                '-',
+                0,  /* Left Arrow */
+                0,
+                0,  /* Right Arrow */
+                '+',
+                0,  /* 79 - End key*/
+                0,  /* Down Arrow */
+                0,  /* Page Down */
+                0,  /* Insert Key */
+                0,  /* Delete Key */
+                0,   0,   0,
+                0,  /* F11 Key */
+                0,  /* F12 Key */
+                0,  /* All other keys are undefined */
+        };
 
 struct idt_pointer
 {
@@ -23,13 +63,15 @@ struct idt_entry
     unsigned short int offset_higherbits;
 } __attribute__((packed));
 
+char *vidptr = VIDEO_MEM;
 struct idt_entry idt_table[IDT_SIZE];
 struct idt_pointer idt_ptr;
+unsigned int current_loc;
 
-static void initialize_idt_pointer(idt_pointer *idt_ptr)
+static void initialize_idt_pointer()
 {
     idt_ptr.limit = (sizeof(struct idt_entry) * IDT_SIZE) - 1;
-    idt_ptr.base = (unsigned int)&idt_table;
+    idt_ptr.base = (unsigned int)idt_table;
 }
 
 extern unsigned char read_port (int port);
@@ -74,9 +116,7 @@ static void initialize_pic()
     write_port(0xA1 , 0xff);
 }
 
-
 void clear_screen(void){
-    char *vidptr = VIDEO_MEM;
     unsigned int i = 0;
     while (i < SCREEN_SIZE) {
         vidptr[i++] = ' ';
@@ -85,7 +125,6 @@ void clear_screen(void){
 }
 
 void print(const char *str){
-    int current_loc = 0;
     char *vidptr = VIDEO_MEM;
     unsigned int i = 0;
     while (str[i] != '\0') {
@@ -94,13 +133,16 @@ void print(const char *str){
     }
 }
 
+void test_print(void) {
+    const char *echo = "tetasts> ";
+    print(echo);
+}
+
 void keyboard_handler(void)
 {
-    int current_loc = 0;
     const char *echo = "echo> ";
     signed char keycode;
     char *vidptr = VIDEO_MEM;
-
     keycode = read_port(0x60);
     /* Only print characters on keydown event that have
      * a non-zero mapping */
@@ -131,18 +173,23 @@ void kb_init(void)
     write_port(0x21, curmask_master & 0xFD);
 }
 
-void idt_init(idt_pointer *idt_ptr)
+void idt_init()
 {
-    initialize_pic(idt_ptr);
+    initialize_pic();
     initialize_idt_pointer();
     load_idt(&idt_ptr);
 }
 
 
 void kernel_c() {
-    struct idt_entry idt_table[IDT_SIZE];
-    struct idt_pointer idt_ptr;
+    keyboard_map[2] = '1';
+    keyboard_map[3] = 'a';
+    vidptr = VIDEO_MEM;
+    current_loc = 0;
     const char *echo = "echo> ";
+    for (int i = 0; i < IDT_SIZE; i++) {
+        load_idt_entry(i, 0, 0, 0);
+    }
     idt_init();
     load_idt_entry(0x21, (unsigned long) keyboard_handler_int, 0x08, 0x8e);
     kb_init();

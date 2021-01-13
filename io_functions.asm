@@ -4,6 +4,7 @@ global write_port
 global load_idt
 global keyboard_handler_int
 extern keyboard_handler
+extern test_print
 
 keyboard_handler_int:
     pushad
