@@ -22,4 +22,4 @@ disk_error:
 	call print_string
 	jmp $
 
-DISK_ERROR_MSG db "Disk read error(",0
+DISK_ERROR_MSG db "Disk read error :c",0

@@ -10,6 +10,12 @@ run: clean all
 kernel.o: kernel.c
 	$(CC) -fno-pie -m32 -ffreestanding -c $< -o $@
 
+keyb.o: keyb.c
+	$(CC) -fno-pie -m32 -ffreestanding -c $< -o $@
+
+idt_init.o: idt_init.c
+	$(CC) -fno-pie -m32 -ffreestanding -c $< -o $@
+
 kernel_entry.o: kernel_entry.asm
 	$(ASM) $< -f elf32 -o $@
 
@@ -19,7 +25,7 @@ io_functions.o: io_functions.asm
 bootstrap.bin: bootstrap.asm
 	$(ASM) $< -f bin -o $@
 
-kernel.bin: kernel_entry.o kernel.o io_functions.o
+kernel.bin: kernel_entry.o kernel.o keyb.o idt_init.o io_functions.o
 	$(LD) -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
 os-image: bootstrap.bin kernel.bin
