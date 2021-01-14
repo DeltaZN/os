@@ -9,6 +9,8 @@
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5
 
+static int buf_pointer = 0;
+static char input_buffer[256];
 /* Maintain a global location for the current video memory to write to */
 static int current_loc = 0;
 /* Video memory starts at 0xb8000. Make it a constant pointer to
@@ -81,6 +83,10 @@ void keyboard_handler(void) {
     if (keycode >= 0 && keyboard_map[keycode]) {
         switch (keyboard_map[keycode]) {
             case '\n':
+                input_buffer[buf_pointer] = '\0';
+                buf_pointer = 0;
+                print_newline();
+                print(input_buffer);
                 print_newline();
                 print(echo);
                 break;
@@ -88,13 +94,21 @@ void keyboard_handler(void) {
                 if (current_loc % COLUMNS_IN_LINE > 6 * 2) {
                     vidptr[--current_loc] = 0x00;
                     vidptr[--current_loc] = 0x00;
+                    buf_pointer--;
                 }
                 break;
             default:
+                input_buffer[buf_pointer++] = keyboard_map[keycode];
                 vidptr[current_loc++] = keyboard_map[keycode];
                 /* Attribute 0x02 is green on black characters */
                 vidptr[current_loc++] = 0x02;
         }
+    }
+
+    if (current_loc > SCREENSIZE) {
+        clear_screen();
+        current_loc = 0;
+        print(echo);
     }
 
     set_cursor(current_loc);
