@@ -75,6 +75,12 @@ void print(const char *str) {
     }
 }
 
+void clear_buf() {
+    for (int i = 0; i < 256; i++) {
+        input_buffer[i] = '\0';
+    }
+}
+
 void keyboard_handler(void) {
     const char *kcmd = "kcmd> ";
     signed char keycode;
@@ -90,6 +96,7 @@ void keyboard_handler(void) {
                 print_newline();
                 handle_command(input_buffer);
                 print(kcmd);
+                clear_buf();
                 break;
             case '\b':
                 if (current_loc % COLUMNS_IN_LINE > 6 * 2) {

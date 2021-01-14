@@ -1,6 +1,8 @@
 const char *ECHO_COMMAND = "echo\0";
 const char *WRITE_MEMORY_COMMAND = "wmem\0";
 const char *READ_MEMORY_COMMAND = "rmem\0";
+const char *HELP_MEMORY_COMMAND1 = "?\0";
+const char *HELP_MEMORY_COMMAND2 = "help\0";
 
 void print(const char *str);
 
@@ -76,6 +78,16 @@ void echo_cmd(char *buf_ptr) {
     print_newline();
 }
 
+void help_cmd() {
+    const char* echo = "echo [str] - print str to console\n";
+    const char* rmem = "rmem [addr] - read a byte from the memory\n";
+    const char* wmem = "wmem [addr] [byte] - write a byte to the memory";
+    print(echo);
+    print(rmem);
+    print(wmem);
+    print_newline();
+}
+
 char* write_to_mem(char* ptr, char *str) {
     unsigned int address = str_to_int(ptr);
     unsigned char value = str_to_int(str);
@@ -113,6 +125,8 @@ void handle_command(char *buf_ptr) {
         buf_cpy(buf_ptr, arg, 5, end);
         char *result = read_from_mem(arg);
         echo_cmd(result);
+    } else if (compare_str(HELP_MEMORY_COMMAND1, command) || compare_str(HELP_MEMORY_COMMAND2, command)) {
+        help_cmd();
     } else {
         print("Command not found\n");
     }
