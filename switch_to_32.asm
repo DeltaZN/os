@@ -12,6 +12,7 @@ switch_to_32:
 
 bits 32
 init_pm:
+    ;hlt
 	mov ax, DATA_SEG
 	mov ds, ax
 	mov es, ax

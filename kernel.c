@@ -7,7 +7,7 @@ void load_idt_entry(int isr_number, unsigned long base, short int selector, unsi
 
 void kernel_c() {
     const char *WELCOME_MSG = "Welcome to the system!\n";
-    const char *ECHO = "echo> ";
+    const char *ECHO = "kcmd> ";
     idt_init();
     load_idt_entry(0x21, (unsigned long) keyboard_handler_int, 0x08, 0x8e);
     kb_init();

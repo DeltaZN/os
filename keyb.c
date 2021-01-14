@@ -18,6 +18,8 @@ static int current_loc = 0;
    is a hint that the value of the pointer won't change */
 static char *const vidptr = (char *) 0xb8000;
 
+void handle_command(char* buf_ptr);
+
 void set_cursor(int offset) {
     offset /= 2; // Covert from cell offset to char offset.
 
@@ -74,7 +76,7 @@ void print(const char *str) {
 }
 
 void keyboard_handler(void) {
-    const char *echo = "echo> ";
+    const char *kcmd = "kcmd> ";
     signed char keycode;
 
     keycode = read_port(0x60);
@@ -86,9 +88,8 @@ void keyboard_handler(void) {
                 input_buffer[buf_pointer] = '\0';
                 buf_pointer = 0;
                 print_newline();
-                print(input_buffer);
-                print_newline();
-                print(echo);
+                handle_command(input_buffer);
+                print(kcmd);
                 break;
             case '\b':
                 if (current_loc % COLUMNS_IN_LINE > 6 * 2) {
@@ -108,7 +109,7 @@ void keyboard_handler(void) {
     if (current_loc > SCREENSIZE) {
         clear_screen();
         current_loc = 0;
-        print(echo);
+        print(kcmd);
     }
 
     set_cursor(current_loc);
