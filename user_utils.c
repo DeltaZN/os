@@ -10,9 +10,6 @@ char *base_pointer = 0x00000000;
 
 void print_newline(void);
 
-char buffer[256];
-char output[256];
-
 int get_first_pos(char* str, char ch) {
     int i = 0;
     while (str[i] != ch) {
@@ -27,7 +24,7 @@ void buf_cpy(char *from, char *to, int start, int end) {
     while (current < end) {
         to[i++] = from[current++];
     }
-    buffer[i] = '\0';
+    to[i] = '\0';
 }
 
 int compare_str(const char *str1, const char *str2) {
