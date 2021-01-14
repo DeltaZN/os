@@ -1,2 +1,0 @@
-floppya: 1_44=os-image , status=inserted
-boot: a

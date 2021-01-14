@@ -1,2 +1,4 @@
 os-image
 *.bin
+*.o
+.idea
