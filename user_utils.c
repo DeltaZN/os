@@ -51,7 +51,7 @@ unsigned int str_to_int (char *str){
     return (temp);
 }
 
-char* int_to_str(int i) {
+char* int_to_str(unsigned char i) {
     static char buf[255];
     char *p = buf + 255;
 
@@ -77,17 +77,16 @@ void echo_cmd(char *buf_ptr) {
 }
 
 char* write_to_mem(char* ptr, char *str) {
-    unsigned int address = str_to_int(ptr);
-    unsigned int value = str_to_int(str);
+    unsigned char address = str_to_int(ptr);
+    unsigned char value = str_to_int(str);
     base_pointer[address] = value;
-    unsigned int result = base_pointer[address];
+    unsigned char result = base_pointer[address];
     return int_to_str(result);
 }
 
 char* read_from_mem(char* ptr){
-    unsigned int i = 0;
-    unsigned int address = str_to_int(ptr);
-    unsigned int result = base_pointer[address];
+    unsigned char address = str_to_int(ptr);
+    unsigned char result = base_pointer[address];
     return int_to_str(result);
 }
 
