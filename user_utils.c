@@ -77,7 +77,7 @@ void echo_cmd(char *buf_ptr) {
 }
 
 char* write_to_mem(char* ptr, char *str) {
-    unsigned char address = str_to_int(ptr);
+    unsigned int address = str_to_int(ptr);
     unsigned char value = str_to_int(str);
     base_pointer[address] = value;
     unsigned char result = base_pointer[address];
@@ -85,7 +85,7 @@ char* write_to_mem(char* ptr, char *str) {
 }
 
 char* read_from_mem(char* ptr){
-    unsigned char address = str_to_int(ptr);
+    unsigned int address = str_to_int(ptr);
     unsigned char result = base_pointer[address];
     return int_to_str(result);
 }
