@@ -93,7 +93,7 @@ void keyboard_handler(void) {
                 break;
             case '\b':
                 if (current_loc % COLUMNS_IN_LINE > 6 * 2) {
-                    vidptr[--current_loc] = 0x00;
+                    vidptr[--current_loc] = 0x07;
                     vidptr[--current_loc] = 0x00;
                     buf_pointer--;
                 }
