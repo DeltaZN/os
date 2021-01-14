@@ -27,7 +27,7 @@ bits 16
 
 load_kernel:
 	mov bx, KERNEL_OFFSET ; destination
-	mov dh, 2 ; 2 sectors of drive
+	mov dh, 32 ; 2 sectors of drive
 	mov dl, [BOOT_DRIVE]
 	call disk_load
 
