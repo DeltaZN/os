@@ -9,10 +9,10 @@
 gdt_start:
     dq MAKE_GDT_DESC(0, 0, 0, 0); null descriptor
 gdt_code:
-    dq MAKE_GDT_DESC(0, 0x0Fffffff, 10011010b, 11001111b)
+    dq MAKE_GDT_DESC(0, 0x000fffff, 10011010b, 11001111b)
                                 ; 32-bit code, 4kb gran, limit 0xffffffff bytes, base=0
 gdt_data:
-    dq MAKE_GDT_DESC(0, 0x0Fffffff, 10010010b, 11001111b)
+    dq MAKE_GDT_DESC(0, 0x000fffff, 10010010b, 11001111b)
                                 ; 32-bit data, 4kb gran, limit 0xffffffff bytes, base=0
 end_of_gdt:
 

@@ -3,7 +3,7 @@ disk_load:
 	push dx
 
 	mov ah, 0x02	; BIOS read sec func
-	mov al, dh	; read dh sector
+	mov al, dh	    ; read dh sector
 	mov ch, 0x00	; read cylinder 0
 	mov dh, 0x00	; select head 0
 	mov cl, 0x02	; start reading from second sector after boot sector
